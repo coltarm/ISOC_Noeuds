@@ -25,5 +25,5 @@ def all_node(n):#on trace n graphe avec une probabilité variant de 1/n à 1
 	Liste_graph=[random_asso(start_prob * k) for k in range(1,n+1)]
 	print(f"il y a {len(Liste_graph)} graphe")	
 tp = time.time()
-all_node(15)
+all_node(2)
 print(f"ça à pris {time.time()- tp}")
