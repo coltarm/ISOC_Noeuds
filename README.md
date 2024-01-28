@@ -25,7 +25,7 @@ Il faut déterminer la taille du plus gros connected component(Pas sûr ce que c
 ## Simple Graph
 Dans cette partie je me référe à un noeuds par joueur parce que c'est censé être un jeu, donc permet d'éviter les répétitions. le joueur ce référe généralement au noeuds qui décident à quelle noeuds doit-il se relier.
 
-Pour le Simple Graph name on doit stocker plusieur information sur un noeuds Sa valeur N(v), le temps auquel il joue, j'ai donc crée une classe.
+Pour le Simple Graph name on doit stocker plusieur information sur un noeuds Sa valeur N(v), le temps auquel il joue, ces voisins pour pouvoir faire une mise à jour de sa valeurs à chaque tour j'ai donc crée une classe.
 
 On commence par définir une fonction create_graph qui prend en argument n le nombre de noeuds que l'on souhaite créer.
 
@@ -33,11 +33,33 @@ Pour connaître à qui sera le prochain tour, on crée une fonction who_play() q
 On défini une liste Node_smalles_time qui stockera les joueur qui doivent jouer au prochain tour. On définie ensuite la variable du plus petit temps, le critère selon lequel on choisit le prochain qui joue.
 On parcours la liste des noeuds et on récupère les prochain joueurs. que l'on retourne à la fin de la fonction
 
-J'ai construit le squelette de la fonction game, la fonction qui effectueras les actions de jeux. 
+La fonction connection choice retourne le choix du joueur
+Pour cela on parcours tous les noeuds et on stocke les noeuds qui ont une valeur plus élevé et qui vont se permettre de se maximiser
+Si plusieur noeuds semble pouvoir maximiser le joueur alors le choix est tiré au hasard.
+
+la fonction create connection prends en argument les association à effectuer et les effectue.
+une association se fait entre deux noeuds
+on ajoute pour les deux noeuds sont nouveaux voisins 
+et on relie les deux noeuds par une arrête
+
+La fonction game coordone les autres fonction et réalise simule le jeux définis dans le sujet
+dans cette dernière on commence par crée un graphe de n-1 noeuds
+on définie une liste des noeuds qui doivent jouer. elle est initialisé par l'ensemble des noeuds(tous les noeuds doivent jouer.)
+On définie une liste Association qui stocke les association à créer après un tour du jeu.
+Ensuite on le jeu commence : 
+au début du tour aucune association n'est défini
+On cherche les joueurs qui doivent jouer en utilisant la fonction who_play qui prend en argument la liste des joueurs devant jouer
+Chaque joueur décide du noeuds auquel il se connecte en utilisant la fonction connection_choice
+on ajoute à association les noeuds qui doivent être relié
+et on retire ensuite le joueurs qui a déterminer son association de la liste des noeuds devant jouer.
+
+On créer la connection entre les noeuds en appelant la fonction create_connection
+et ensuite on mets à jour la valeur de chaque noeuds
 
 ###Continuation
-Il faut faire compléter la fonction connection_choice, qui doit servir à décidé sur quelle noeuds doit se connecter le joueur
-Il faut ensuite compléter la fonction et game.
+Vérifier le fonctionnement du code
+Afficher les noeuds et les association
+répondre au question du prof
 
 ### prédictions sur cette partie
 Les noeuds se regrouperons probablement sur quelque noeuds majoritaire. puisque pour se maximiser je vais chercher le noeuds avec les noeuds avec le plus de connection et il y aura donc probablement une centrallisation sur quelque noeuds.

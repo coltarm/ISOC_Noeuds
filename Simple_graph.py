@@ -5,18 +5,29 @@ class node: # On crée un objet noeuds qui contient les informations d'un noeuds
 		self.v = v
 		self.value = value
 		self.time = random.randint(0,10000)
+		self.Neighbors =[]
 
 	def getTime(self):
 		return self.time
 
 	def addValue(self,value_to_add ):
 		self.value += value_to_add
+
+	def addNeighbor(self, node): #on stocke les voisins dans Neighbor puisqu'on doit update notre valeur en foction de la valeur de notre voisin.
+		self.Neighbors.append(node)
+
 	def getValue(self): # on doit être capable de déterminer la valeur de chaque noeuds avec une valeur de +- 50% (c'est la vision des noeuds)
 		value_gap = random.randint(50,150)
 		estimate_value = self.value * value_gap/100
 		return estimate_value
 	def getExactValue(self):
 		return self.value
+
+	def updateValue(self):
+		value = 0
+		for node in self.Neighbors:
+			value+= node.getExactValue()
+		self.value = value
 
 #Question comment on gère quands plusieurs noeuds font le choix en même temps, chacun ne doit pas être au courant du choix de l'autre?
 # Idée on va supposer que ils vont faire des choix similaire.
@@ -37,8 +48,8 @@ def create_connection(G, List_node_to_connect): #on donne en argument le graph e
 	for asso in List_node_to_connect:
 		node1 = asso[0]
 		node2 = asso[1]
-		node1.addValue(node2.getExactValue())
-		node2.addValue(node1.getExactValue())
+		node1.addNeighbor(node2)
+		node2.addNeighbor(node1)
 		G.add_edge(node1,node2)
 		
 
@@ -59,7 +70,7 @@ def who_play(Node_list): # objectif de cette fonction est de déterminer qui doi
 	return Node_smallest_time
 
 def game():
-	G = create_graph(10)
+	G = create_graph(10000)
 	List_node = list(G.nodes)
 	List_nodes_to_play = List_node[:]
 	Association =[]# on stocke les assoqu'on doit faire
@@ -71,6 +82,8 @@ def game():
 			Association.append([node,connect_to])
 			List_nodes_to_play.remove(node) #on enlève un noeuds quand il a joué
 		create_connection(G,Association) # on crée les association choisis lors du tour.
+		for node in List_node:
+			node.updateValue()# on mets à jour les valeurs
 	return G
 
 print(f'nuber of edges : {game().number_of_edges()}')
