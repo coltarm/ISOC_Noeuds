@@ -1,4 +1,5 @@
 import networkx as nx
+import matplotlib.pyplot as plt
 import time
 import random
 G = nx.Graph()
@@ -18,12 +19,15 @@ def random_asso(p): # on crée une fonction pour associé chaque noeuds selon la
 			if choix ==[1]:
 				G.add_edge(node, node_asso)
 	print(f'nbre arrete = {G.number_of_edges()} nb noeuds = {G.number_of_nodes()}')
-	return G
+	return max([len(c) for c in sorted(nx.connected_components(G), key = len, reverse=True)])
 
 def all_node(n):#on trace n graphe avec une probabilité variant de 1/n à 1
-	start_prob = 1/n
-	Liste_graph=[random_asso(start_prob * k) for k in range(1,n+1)]
-	print(f"il y a {len(Liste_graph)} graphe")	
+	start_prob = 1/100
+	Largest_components = [random_asso(start_prob * k) for k in range(1,n+1)]
+	List_prob=[start_prob * k for k in range(1,n+1)]
+	print(f"il y a {len(List_prob)} graphe")
+	plt.plot(List_prob, Largest_components)
+	plt.show()
 tp = time.time()
-all_node(2)
+all_node(100)
 print(f"ça à pris {time.time()- tp}")
