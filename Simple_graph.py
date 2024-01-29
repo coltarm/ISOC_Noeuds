@@ -1,9 +1,9 @@
 import networkx as nx
 import random
 class node: # On crée un objet noeuds qui contient les informations d'un noeuds ça valeur , le temps auquel il doit jouer.
-	def __init__(self,v,value=0):
+	def __init__(self,v):
 		self.v = v
-		self.value = value
+		self.value = 0
 		self.time = random.randint(0,10000)
 		self.Neighbors =[]
 
@@ -15,6 +15,10 @@ class node: # On crée un objet noeuds qui contient les informations d'un noeuds
 
 	def addNeighbor(self, node): #on stocke les voisins dans Neighbor puisqu'on doit update notre valeur en foction de la valeur de notre voisin.
 		self.Neighbors.append(node)
+		if len(self.Neighbors)==1 and node.getExactValue()==0:
+			sel.value =1
+		else:
+			self.updateValue()
 
 	def getValue(self): # on doit être capable de déterminer la valeur de chaque noeuds avec une valeur de +- 50% (c'est la vision des noeuds)
 		value_gap = random.randint(50,150)
